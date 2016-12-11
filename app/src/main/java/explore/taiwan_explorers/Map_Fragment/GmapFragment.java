@@ -6,6 +6,7 @@ package explore.taiwan_explorers.Map_Fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
@@ -136,11 +137,17 @@ public class GmapFragment extends SupportMapFragment implements LocationListener
     private void showAlert(){
         new AlertDialog.Builder(this.getActivity())
                 .setTitle("請開啟服務")
-                .setMessage("請開啟網路定位服務")
-                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                .setMessage("請開啟網路定位服務\n前往設定頁，請按照 設定->個人化->位置")
+                .setPositiveButton("退出", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //getActivity().finish();
+                    }
+                })
+                .setNegativeButton("設定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
                     }
                 })
                 .show();
