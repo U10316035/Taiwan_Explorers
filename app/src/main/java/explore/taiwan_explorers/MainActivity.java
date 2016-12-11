@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.view.WindowManager;
 import android.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         coord = openOrCreateDatabase("coord1.db",MODE_PRIVATE,null);
         String str = "CREATE TABLE IF NOT EXISTS table01(_id INTEGER PRIMARY KEY AUTOINCREMENT,tit TEXT,txt TEXT,lat DOUBLE,lon DOUBLE)";
