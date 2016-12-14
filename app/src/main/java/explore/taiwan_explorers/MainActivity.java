@@ -38,6 +38,8 @@ import explore.taiwan_explorers.DBHelper.DBHelper;
 import explore.taiwan_explorers.Map_Fragment.FlagFragment;
 import explore.taiwan_explorers.Map_Fragment.GmapFragment;
 import explore.taiwan_explorers.DBHelper.DBHelper;
+import explore.taiwan_explorers.Photo_Album.chooseAct_fragment;
+import explore.taiwan_explorers.share.share_fragment;
 //import explore.taiwan_explorers.Map_Fragment.NoteFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -269,6 +271,8 @@ public class MainActivity extends AppCompatActivity
                         }
                     })
                     .show();
+        }else if (id == R.id.share) {
+            Toast.makeText(this,"share", Toast.LENGTH_LONG).show();
         }
 
         return super.onOptionsItemSelected(item);
@@ -303,7 +307,14 @@ public class MainActivity extends AppCompatActivity
             menu.clear();
             getMenuInflater().inflate(R.menu.flag, menu);
             fm.beginTransaction().replace(R.id.content_frame, myFlag).commit();
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.photo) {
+                menu.clear();
+                fm.beginTransaction().replace(R.id.content_frame, new chooseAct_fragment()).commit();
+        }else if (id == R.id.share) {
+                menu.clear();
+                getMenuInflater().inflate(R.menu.share, menu);
+                fm.beginTransaction().replace(R.id.content_frame, new share_fragment()).commit();
+        }else if (id == R.id.nav_manage) {
             new android.app.AlertDialog.Builder(this)
                     .setTitle("離開此程式")
                     .setMessage("你確定要離開？")

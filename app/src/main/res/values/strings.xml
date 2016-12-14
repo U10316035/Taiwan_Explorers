@@ -5,6 +5,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">登記座標</string>
+    <string name="shareItem">發文</string>
     <string name="modify">修改</string>
     <string name="delete">刪除</string>
 </resources>
