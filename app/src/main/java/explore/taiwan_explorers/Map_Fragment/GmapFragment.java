@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Criteria;
 import android.location.Location;
@@ -25,11 +26,16 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
+import explore.taiwan_explorers.MainActivity;
 import explore.taiwan_explorers.R;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 public class GmapFragment extends SupportMapFragment implements LocationListener,OnMapReadyCallback {
@@ -41,6 +47,7 @@ public class GmapFragment extends SupportMapFragment implements LocationListener
     String bestProv;
     public double a,b;
     public LatLng poi;
+    boolean readyOrNot = false;
     //  Context mContext;
 
     SQLiteDatabase coord = null;
@@ -73,14 +80,28 @@ public class GmapFragment extends SupportMapFragment implements LocationListener
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        readyOrNot = false;
 
         SupportMapFragment fragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
-        fragment.getMapAsync(this);
-        mMap = fragment.getMap();
-        // mMap = fragment.getMap();
+        fragment.getMapAsync(new OnMapReadyCallback() {
+
+            @Override
+            public void onMapReady(GoogleMap googlemap) {
+                // TODO Auto-generated method stub
+                mMap=googlemap;
+                afterReady();
+                readyOrNot = true;
+                ((MainActivity)getActivity()).setFlagAfterReaady();
+            }
+        });
+        /*if (mMap == null) {
+            SupportMapFragment mapFrag = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+            mapFrag.getMapAsync(this);
+        }*/
+        //mMap = fragment.getMap();
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         locMgr = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -97,6 +118,9 @@ public class GmapFragment extends SupportMapFragment implements LocationListener
     public void onResume(){
         super.onResume();
         //coord  = openOrCreateDatabase("coord1.db",MODE_PRIVATE,null);
+    }
+
+    void afterReady(){
         if(locMgr.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 locMgr.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
             if(ContextCompat.checkSelfPermission(this.getActivity(),
@@ -122,8 +146,6 @@ public class GmapFragment extends SupportMapFragment implements LocationListener
                         }catch (SecurityException e) {
                         }
                     } else {
-                        /*mMap.setMyLocationEnabled(false);
-                        retry();*/
                     }
                     //Toast.makeText(this.getActivity(),"請到空曠的地點", Toast.LENGTH_LONG).show();
                 }
@@ -131,7 +153,6 @@ public class GmapFragment extends SupportMapFragment implements LocationListener
         }else{
             Toast.makeText(this.getActivity(),"請開啟定位服務", Toast.LENGTH_LONG).show();
         }
-
     }
 
     private void showAlert(){
@@ -216,7 +237,9 @@ public class GmapFragment extends SupportMapFragment implements LocationListener
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        //setUpMap();
     }
+
 
     //  @Override
    /* public void onActivityCreated(Bundle savedInstanceState) {
@@ -240,5 +263,18 @@ public class GmapFragment extends SupportMapFragment implements LocationListener
     public GoogleMap getmMap(){
         return mMap;
     }
+
+    public boolean mapReadyOrNot(){
+        return readyOrNot;
+    }
+
+    /*public void setUpMap(){
+
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mMap.setTrafficEnabled(true);
+        mMap.setIndoorEnabled(true);
+        mMap.setBuildingsEnabled(true);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+    }*/
 
 }

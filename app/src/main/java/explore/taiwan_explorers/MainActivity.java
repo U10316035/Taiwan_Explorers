@@ -366,17 +366,23 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
-        Cursor Cur = coord.rawQuery("SELECT * FROM table01",null);
-        for(int i = 0;i < Cur.getCount();i++){
-            //Toast.makeText(this,i+"", Toast.LENGTH_LONG).show();
-            Cur.moveToPosition(i);
-            MarkerOptions marker = new MarkerOptions();
-            map.poi = new LatLng(Cur.getDouble(3),Cur.getDouble(4));
-            marker.position(map.poi);
-            marker.title(Cur.getString(1));
-            marker.snippet(Cur.getString(2));
-            marker.visible(true);
-            map.mMap.addMarker(marker);
+
+    }
+
+    public void setFlagAfterReaady(){
+        if(map.mapReadyOrNot()) {
+            Cursor Cur = coord.rawQuery("SELECT * FROM table01", null);
+            for (int i = 0; i < Cur.getCount(); i++) {
+                //Toast.makeText(this,i+"", Toast.LENGTH_LONG).show();
+                Cur.moveToPosition(i);
+                MarkerOptions marker = new MarkerOptions();
+                map.poi = new LatLng(Cur.getDouble(3), Cur.getDouble(4));
+                marker.position(map.poi);
+                marker.title(Cur.getString(1));
+                marker.snippet(Cur.getString(2));
+                marker.visible(true);
+                map.mMap.addMarker(marker);
+            }
         }
     }
 
