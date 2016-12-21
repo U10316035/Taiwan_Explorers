@@ -14,6 +14,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -55,6 +56,10 @@ public class MainActivity extends AppCompatActivity
     //private NoteFragment myNote = new NoteFragment();
     private FlagFragment myFlag = new FlagFragment();
     Marker marker;
+
+    public int ScreenWidth;
+    public int ScreenHeight;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -87,6 +92,12 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        ScreenWidth = dm.widthPixels;
+        ScreenHeight = dm.heightPixels;
 
         coord = openOrCreateDatabase("coord1.db",MODE_PRIVATE,null);
         String str = "CREATE TABLE IF NOT EXISTS table01(_id INTEGER PRIMARY KEY AUTOINCREMENT,tit TEXT,txt TEXT,lat DOUBLE,lon DOUBLE)";
@@ -138,6 +149,16 @@ public class MainActivity extends AppCompatActivity
             else {
                 // 啟動地圖與定位元件
 
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            final int REQUEST_WRITE_STORAGE = 112;
+            int hasPermission = checkSelfPermission(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (hasPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_WRITE_STORAGE);
             }
         }
     }
@@ -431,5 +452,13 @@ public class MainActivity extends AppCompatActivity
                     }
                 })
                 .show();
+    }
+
+    public int getScreenWidth(){
+        return ScreenWidth;
+    }
+
+    public int getScreenHeight(){
+        return ScreenHeight;
     }
 }

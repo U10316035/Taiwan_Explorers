@@ -3,6 +3,7 @@ package explore.taiwan_explorers.Map_Fragment;
 /**
  * Created by no_name on 2016/12/11.
  */
+
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +18,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -38,19 +40,20 @@ import explore.taiwan_explorers.R;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class GmapFragment extends SupportMapFragment implements LocationListener,OnMapReadyCallback {
+public class GmapFragment extends SupportMapFragment implements LocationListener, OnMapReadyCallback {
 
 
     public GoogleMap mMap;
     float zoom;
     private LocationManager locMgr;
     String bestProv;
-    public double a,b;
+    public double a, b;
     public LatLng poi;
     boolean readyOrNot = false;
     //  Context mContext;
 
     SQLiteDatabase coord = null;
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -69,14 +72,11 @@ public class GmapFragment extends SupportMapFragment implements LocationListener
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }*/
-
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_gmaps, container,false);
+        return inflater.inflate(R.layout.fragment_gmaps, container, false);
     }
 
     @Override
@@ -85,16 +85,16 @@ public class GmapFragment extends SupportMapFragment implements LocationListener
 
         readyOrNot = false;
 
-        SupportMapFragment fragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment fragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         fragment.getMapAsync(new OnMapReadyCallback() {
 
             @Override
             public void onMapReady(GoogleMap googlemap) {
                 // TODO Auto-generated method stub
-                mMap=googlemap;
+                mMap = googlemap;
                 afterReady();
                 readyOrNot = true;
-                ((MainActivity)getActivity()).setFlagAfterReaady();
+                ((MainActivity) getActivity()).setFlagAfterReaady();
             }
         });
         /*if (mMap == null) {
@@ -108,16 +108,43 @@ public class GmapFragment extends SupportMapFragment implements LocationListener
         Criteria criteria = new Criteria();
         do {
             bestProv = locMgr.getBestProvider(criteria, true);
-        }while(bestProv==null);
+        } while (bestProv == null);
         //Toast.makeText(this.getActivity(),bestProv, Toast.LENGTH_LONG).show();
         //fragment.getMapAsync(this);
 
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
+        if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locMgr.requestLocationUpdates(bestProv, 1000, 0, this);
         //coord  = openOrCreateDatabase("coord1.db",MODE_PRIVATE,null);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locMgr.removeUpdates(this);
     }
 
     void afterReady(){
