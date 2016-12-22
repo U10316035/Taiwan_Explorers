@@ -12,6 +12,7 @@
 
     <application
         android:allowBackup="true"
+        android:name="android.support.multidex.MultiDexApplication"
         android:hardwareAccelerated="false"
         android:largeHeap="true"
         android:icon="@mipmap/ic_launcher"

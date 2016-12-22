@@ -161,6 +161,17 @@ public class MainActivity extends AppCompatActivity
                         REQUEST_WRITE_STORAGE);
             }
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            final int REQUEST_WRITE_STORAGE = 113;
+            int hasPermission = checkSelfPermission(
+                    Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (hasPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_WRITE_STORAGE);
+            }
+        }
     }
 
     @Override

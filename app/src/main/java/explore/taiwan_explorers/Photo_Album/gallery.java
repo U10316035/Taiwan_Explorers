@@ -67,7 +67,7 @@ public class gallery extends Activity {
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.outWidth = (int) (ScreenWidth / 1.5);
                     options.outHeight = (int) (ScreenHeight / 1.5);
-                    options.inSampleSize = 4;
+                    options.inSampleSize = 8;
                     options.inJustDecodeBounds = false;
                     bmp = BitmapFactory.decodeFile(it.get(position).toString(), options);//= IA.getBitmap(); //
                 }

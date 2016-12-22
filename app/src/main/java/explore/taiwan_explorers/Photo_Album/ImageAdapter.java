@@ -58,7 +58,10 @@ public class ImageAdapter extends BaseAdapter {
 //產生ImageView物件
         ImageView i = new ImageView(mCoNtext);
 //設置圖片給ImageView物件
-        Bitmap bm = BitmapFactory.decodeFile(lis.get(position).toString());
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 16;
+        options.inJustDecodeBounds = false;
+        Bitmap bm = BitmapFactory.decodeFile(lis.get(position).toString(),options);
         //setBitmap(bm);
         i.setImageBitmap(bm);
 //重新設置圖片的寬度

@@ -141,17 +141,45 @@ public class chooseAct_fragment  extends Fragment {
             adjustPIC(iv,PicWidth,PicHeight);
             iv.setImageBitmap(bmp);
             iv.setVisibility(View.VISIBLE);*/
+                /*BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;*/
+
+                /*boolean b = isPicExist(preSaveFile.getAbsolutePath().toString());
+                if(b)
+                    Toast.makeText(getActivity(),"0",Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(getActivity(),"1",Toast.LENGTH_LONG).show();*/
+
                 BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                bmp = BitmapFactory.decodeFile(preSaveFile.toString(), options);
+                options.outWidth = (int) (ScreenWidth / 1.5);
+                options.outHeight = (int) (ScreenHeight / 1.5);
+                options.inSampleSize = 8;
+                options.inJustDecodeBounds = false;
+                bmp = BitmapFactory.decodeFile(preSaveFile.getAbsolutePath().toString(),options);//, options);
+                /*b = isPicExist(preSaveFile.getAbsolutePath().toString());
+                if(b)
+                    Toast.makeText(getActivity(),"0",Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(getActivity(),"1",Toast.LENGTH_LONG).show();
+                if(bmp.equals(null)){
+                    Bundle extras = data.getExtras();
+                    //將資料轉換為圖像格式
+                    bmp = (Bitmap) extras.get("data");
+                    //載入ImageView
+
+                    PicWidth = bmp.getWidth();
+                    PicHeight = bmp.getHeight();
+                }*/
+
+                Toast.makeText(getActivity(),preSaveFile.toString(),Toast.LENGTH_LONG).show();
             /*try {
                 adjustDegree(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }*/
-                PicWidth = bmp.getWidth();
-                PicHeight = bmp.getHeight();
-                adjustPIC(iv, PicWidth, PicHeight);
+                /*PicWidth = bmp.getWidth();
+                PicHeight = bmp.getHeight();*/
+                adjustPIC(iv, bmp.getWidth(), bmp.getHeight());
                 iv.setImageBitmap(bmp);
                 iv.setVisibility(View.VISIBLE);
 
