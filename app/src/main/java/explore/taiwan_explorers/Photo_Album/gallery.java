@@ -1,13 +1,16 @@
 package explore.taiwan_explorers.Photo_Album;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Environment;
+import android.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
@@ -43,6 +46,7 @@ public class gallery extends Activity {
         IA = new ImageAdapter(this, getSD());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.location_photo);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         i=(ImageView)findViewById(R.id.image1);
 
         DisplayMetrics dm = new DisplayMetrics();
@@ -67,7 +71,7 @@ public class gallery extends Activity {
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.outWidth = (int) (ScreenWidth / 1.5);
                     options.outHeight = (int) (ScreenHeight / 1.5);
-                    options.inSampleSize = 8;
+                    options.inSampleSize = 4;
                     options.inJustDecodeBounds = false;
                     bmp = BitmapFactory.decodeFile(it.get(position).toString(), options);//= IA.getBitmap(); //
                 }
@@ -78,6 +82,41 @@ public class gallery extends Activity {
                         Toast.LENGTH_LONG).show();*/
             }
         });
+
+        g.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int pos, long id) {
+                final int position = pos;
+                // TODO Auto-generated method stub
+                AlertDialog.Builder builder = new AlertDialog.Builder(gallery.this);
+
+                builder.setTitle("刪除圖片");
+                builder.setPositiveButton("刪除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        File file = new File(it.get(position).toString());
+                        file.delete();
+                        onResume();
+                    }
+                });
+                builder.setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                builder.show();
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        this.onCreate(null);
     }
 
     private void adjustPIC(Bitmap bp, int Width, int Height) {

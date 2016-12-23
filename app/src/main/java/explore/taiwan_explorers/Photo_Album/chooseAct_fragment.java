@@ -1,7 +1,9 @@
 package explore.taiwan_explorers.Photo_Album;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -21,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -65,6 +68,28 @@ public class chooseAct_fragment  extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            final int REQUEST_WRITE_STORAGE = 112;
+            int hasPermission = getActivity().checkSelfPermission(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (hasPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_WRITE_STORAGE);
+            }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            final int REQUEST_READ_STORAGE = 113;
+            int hasPermission = getActivity().checkSelfPermission(
+                    Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (hasPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_READ_STORAGE);
+            }
+        }
 
         init();
 
@@ -151,25 +176,33 @@ public class chooseAct_fragment  extends Fragment {
                     Toast.makeText(getActivity(),"1",Toast.LENGTH_LONG).show();*/
 
                 BitmapFactory.Options options = new BitmapFactory.Options();
-                options.outWidth = (int) (ScreenWidth / 1.5);
-                options.outHeight = (int) (ScreenHeight / 1.5);
-                options.inSampleSize = 8;
+                options.outWidth = ScreenWidth;
+                options.outHeight = ScreenHeight;
+                options.inSampleSize = 2;
                 options.inJustDecodeBounds = false;
                 bmp = BitmapFactory.decodeFile(preSaveFile.getAbsolutePath().toString(),options);//, options);
                 /*b = isPicExist(preSaveFile.getAbsolutePath().toString());
                 if(b)
                     Toast.makeText(getActivity(),"0",Toast.LENGTH_LONG).show();
                 else
-                    Toast.makeText(getActivity(),"1",Toast.LENGTH_LONG).show();
-                if(bmp.equals(null)){
-                    Bundle extras = data.getExtras();
+                    Toast.makeText(getActivity(),"1",Toast.LENGTH_LONG).show();*/
+                if(bmp==null){
+                   /* Bundle extras = data.getExtras();
                     //將資料轉換為圖像格式
                     bmp = (Bitmap) extras.get("data");
                     //載入ImageView
 
                     PicWidth = bmp.getWidth();
-                    PicHeight = bmp.getHeight();
-                }*/
+                    PicHeight = bmp.getHeight();*/
+                    File location = new File(preSaveFile.getAbsolutePath().toString());
+                    FileInputStream fis=null;
+                    try {
+                        fis = new FileInputStream(location);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    bmp = BitmapFactory.decodeStream(fis);
+                }
 
                 Toast.makeText(getActivity(),preSaveFile.toString(),Toast.LENGTH_LONG).show();
             /*try {

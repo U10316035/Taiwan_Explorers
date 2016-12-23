@@ -59,7 +59,7 @@ public class ImageAdapter extends BaseAdapter {
         ImageView i = new ImageView(mCoNtext);
 //設置圖片給ImageView物件
         BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 16;
+        options.inSampleSize = 32;
         options.inJustDecodeBounds = false;
         Bitmap bm = BitmapFactory.decodeFile(lis.get(position).toString(),options);
         //setBitmap(bm);

@@ -163,13 +163,13 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            final int REQUEST_WRITE_STORAGE = 113;
+            final int REQUEST_READ_STORAGE = 113;
             int hasPermission = checkSelfPermission(
                     Manifest.permission.READ_EXTERNAL_STORAGE);
             if (hasPermission != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        REQUEST_WRITE_STORAGE);
+                        REQUEST_READ_STORAGE);
             }
         }
     }

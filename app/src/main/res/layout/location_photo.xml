@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="explore.taiwan_explorers.Photo_Album.gallery"
+    android:background="#cfcfcf"
     android:orientation="vertical" >
+
 
     <Gallery
         android:id="@+id/gallery"
@@ -17,7 +19,7 @@
         android:layout_height="wrap_content"
         android:background="#cfcfcf"
         android:layout_gravity="center_horizontal"
-        android:paddingTop="30dp"
+        android:paddingTop="10dp"
         android:paddingBottom="5dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp" />
