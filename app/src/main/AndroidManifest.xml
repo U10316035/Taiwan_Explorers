@@ -44,7 +44,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="explore.taiwan_explorers.Photo_Album.gallery" >
+        <activity android:name="explore.taiwan_explorers.Photo_Album.gallery" />
+        <activity android:name="explore.taiwan_explorers.Travel_Diary.NewNote" />
+        <activity android:name="explore.taiwan_explorers.Travel_Diary.ENote" >
         </activity>
 
         <meta-data

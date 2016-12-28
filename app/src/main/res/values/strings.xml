@@ -8,4 +8,12 @@
     <string name="shareItem">發文</string>
     <string name="modify">修改</string>
     <string name="delete">刪除</string>
+
+    <string name="action_new">New Note</string>
+    <string name="title_activity_new_note">NewNote</string>
+    <string name="NewNote">Enter Note Here</string>
+    <string name="action_done">Done</string>
+    <string name="action_saveNote">Save</string>
+    <string name="action_discardNote">Discard</string>
+    <string name="title_activity_e_note">Old Note</string>
 </resources>

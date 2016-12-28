@@ -2,6 +2,7 @@ package explore.taiwan_explorers;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -40,7 +41,11 @@ import explore.taiwan_explorers.DBHelper.DBHelper;
 import explore.taiwan_explorers.Map_Fragment.FlagFragment;
 import explore.taiwan_explorers.Map_Fragment.GmapFragment;
 import explore.taiwan_explorers.DBHelper.DBHelper;
+import explore.taiwan_explorers.Map_Fragment.SearchFlagFragment;
 import explore.taiwan_explorers.Photo_Album.chooseAct_fragment;
+import explore.taiwan_explorers.Photo_Album.gallery;
+import explore.taiwan_explorers.Travel_Diary.MainDiaryFragment;
+import explore.taiwan_explorers.Travel_Diary.NewNote;
 import explore.taiwan_explorers.share.share_fragment;
 //import explore.taiwan_explorers.Map_Fragment.NoteFragment;
 
@@ -54,7 +59,7 @@ public class MainActivity extends AppCompatActivity
     private String m_Title = "";
     private String m_Text = "";
     Menu menu;
-    //private NoteFragment myNote = new NoteFragment();
+    private MainDiaryFragment diary = new MainDiaryFragment();
     private FlagFragment myFlag = new FlagFragment();
     Marker marker;
 
@@ -177,12 +182,20 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("離開")
+                .setMessage("確定要離開程式?")
+                .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                    }}).setNegativeButton("否", null).show();
+
+        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-        }
+        }*/
     }
 
     @Override
@@ -310,6 +323,14 @@ public class MainActivity extends AppCompatActivity
                     .show();
         }else if (id == R.id.share) {
             Toast.makeText(this,"share", Toast.LENGTH_LONG).show();
+        }else if (id == R.id.action_new) {
+
+            Intent int1 = new Intent();
+            int1.setClass(this, NewNote.class);
+            startActivity(int1);
+            /*Intent intent = new Intent(getActivity(), NewNote.class);
+            startActivity(intent);*/
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -351,7 +372,7 @@ public class MainActivity extends AppCompatActivity
                 menu.clear();
                 getMenuInflater().inflate(R.menu.share, menu);
                 fm.beginTransaction().replace(R.id.content_frame, new share_fragment()).commit();
-        }else if (id == R.id.nav_manage) {
+        }else if (id == R.id.exit) {
             new android.app.AlertDialog.Builder(this)
                     .setTitle("離開此程式")
                     .setMessage("你確定要離開？")
@@ -369,9 +390,15 @@ public class MainActivity extends AppCompatActivity
                         }
                     })
                     .show();
-        } else if (id == R.id.note) {
+        } else if (id == R.id.diary) {
+            /*Intent int1 = new Intent();
+            int1.setClass(MainActivity.this, gallery.class);
+            startActivity(int1);*/
+            menu.clear();
+            fm.beginTransaction().replace(R.id.content_frame, diary).commit();
+            getMenuInflater().inflate(R.menu.menu_diary_main, menu);
             /*menu.clear();
-            fm.beginTransaction().replace(R.id.content_frame, myNote).commit();
+            fm.beginTransaction().replace(R.id.content_frame, diary).commit();
             menu.removeItem(R.id.action_settings);
             getMenuInflater().inflate(R.menu.note, menu);*/
         }
@@ -471,7 +498,7 @@ public class MainActivity extends AppCompatActivity
                                 map.mMap.addMarker(marker);
 
                                 Toast.makeText(getApplicationContext(), m_Title + "已記錄", Toast.LENGTH_LONG).show();
-                                myFlag.fhelper.insert("TITLE : " + " " + m_Title + "\n" + "CONTEXT : " + " " + m_Text);
+                                myFlag.fhelper.insert("標題 : " + " " + m_Title + "\n" + "描述 : " + " " + m_Text);
                                 myFlag.cursor.requery();
                                 myFlag.cursorAdapter.notifyDataSetChanged();
 
@@ -550,5 +577,15 @@ public class MainActivity extends AppCompatActivity
 
     public int getScreenHeight(){
         return ScreenHeight;
+    }
+
+    public void searchFlagFragment(double la,double lo,String ti,String co){
+        FragmentManager fm = getSupportFragmentManager();
+        SearchFlagFragment s = new SearchFlagFragment();
+        s.setLat(la);
+        s.setLon(lo);
+        s.setString(ti,co);
+        fm.beginTransaction().replace(R.id.content_frame, s).commit();
+        menu.clear();
     }
 }

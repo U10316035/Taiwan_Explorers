@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import explore.taiwan_explorers.DBHelper.DBHelper;
+import explore.taiwan_explorers.MainActivity;
 import explore.taiwan_explorers.R;
 
 public class FlagFragment extends Fragment {
@@ -89,6 +90,7 @@ public class FlagFragment extends Fragment {
         option = new ArrayList<>();
         option.add(getActivity().getApplicationContext().getString(R.string.modify));
         option.add(getString(R.string.delete));
+        option.add("前往地圖");
 
         option_1 = new ArrayList<>();
         option_1.add("title");
@@ -132,7 +134,12 @@ public class FlagFragment extends Fragment {
                 //Toast.makeText(getActivity(),position+"", Toast.LENGTH_LONG).show();
                 //Toast.makeText(getActivity(),cursor.getPosition()+"", Toast.LENGTH_LONG).show();
                 final int pos = position;
-                cursor.moveToPosition(1);
+                //cursor.moveToPosition(1);
+
+                /*cursor*/
+                final Cursor Cur = coord.rawQuery("SELECT * FROM table01",null);
+                Cur.moveToPosition(pos);
+                /*cursor*/
 
                 new AlertDialog.Builder(getActivity())
                         .setItems(option.toArray(new String[option.size()]), new DialogInterface.OnClickListener() {
@@ -147,13 +154,18 @@ public class FlagFragment extends Fragment {
                                         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
                                         LinearLayout lila1 = new LinearLayout(getContext());
                                         lila1.setOrientation(LinearLayout.VERTICAL);
-                                        builder.setTitle("title");
+                                        builder.setTitle("Edit flag");
                                         final EditText title = new EditText(getContext());
+                                        title.setText(Cur.getString(1));
                                         final EditText input = new EditText(getContext());
-                                        TextView text = new TextView(getContext());
-                                        text.setText("　　context");
+                                        input.setText(Cur.getString(2));
+                                        TextView text1 = new TextView(getContext());
+                                        text1.setText("　　Title");
+                                        TextView text2 = new TextView(getContext());
+                                        text2.setText("　　context");
+                                        lila1.addView(text1);
                                         lila1.addView(title);
-                                        lila1.addView(text);
+                                        lila1.addView(text2);
                                         lila1.addView(input);
                                         builder.setView(lila1);
                                         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -162,15 +174,16 @@ public class FlagFragment extends Fragment {
                                             m_Text = input.getText().toString();*/
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                fhelper.update(cursor.getInt(0), "TITLE : " + " " + title.getText().toString() + "\n" +  "CONTEXT : " + " " + input.getText().toString() );
+                                                cursor.moveToPosition(pos);
+                                                fhelper.update(cursor.getInt(0), "標題 : " + " " + title.getText().toString() + "\n" +  "描述 : " + " " + input.getText().toString() );
                                                 cursor.requery();
                                                 cursorAdapter.notifyDataSetChanged();
 
-                                                Cursor Cur = coord.rawQuery("SELECT * FROM table01",null);
+                                                //Cursor Cur = coord.rawQuery("SELECT * FROM table01",null);
 
                                                 //Toast.makeText(this,i+"", Toast.LENGTH_LONG).show();
 
-                                                Cur.moveToPosition(pos);
+                                                //Cur.moveToPosition(pos);
                                                 //String[] AfterSplit = editText.getText().toString().split(" ");
                                                 ContentValues values = new ContentValues();
                                                 /*values.put("tit",AfterSplit[0]);
@@ -231,11 +244,11 @@ public class FlagFragment extends Fragment {
                                                         cursor.requery();
                                                         cursorAdapter.notifyDataSetChanged();
 
-                                                        Cursor Cur = coord.rawQuery("SELECT * FROM table01",null);
+                                                        //Cursor Cur = coord.rawQuery("SELECT * FROM table01",null);
 
                                                         //Toast.makeText(this,i+"", Toast.LENGTH_LONG).show();
 
-                                                        Cur.moveToPosition(pos);
+                                                        //Cur.moveToPosition(pos);
                                                         //Toast.makeText(getActivity(),i+"", Toast.LENGTH_LONG).show();
                                                         // String p = Integer.toString(pos);
                                                         // Toast.makeText(getActivity(),p, Toast.LENGTH_LONG).show();
@@ -258,6 +271,13 @@ public class FlagFragment extends Fragment {
                                                 })
                                                 .show();
                                         break;
+                                    case 2://set map
+                                        String tit = Cur.getString(1);
+                                        String con = Cur.getString(2);
+                                        double lat = Cur.getDouble(3);
+                                        double lon = Cur.getDouble(4);
+                                        searchFlag(lat,lon,tit,con);
+                                        break;
                                 }
 
                             }
@@ -266,6 +286,10 @@ public class FlagFragment extends Fragment {
             }
 
         });
+    }
+
+    private void searchFlag(double la,double lo,String ti,String co){
+        ((MainActivity)getActivity()).searchFlagFragment(la,lo,ti,co);
     }
 
     public void setFlagSQL(SQLiteDatabase coord){
