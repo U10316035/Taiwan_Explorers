@@ -17,10 +17,15 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +41,7 @@ public class FlagFragment extends Fragment {
     public Cursor cursor;
     public SimpleCursorAdapter cursorAdapter;
     private List<String> option;
+    private List<String> option_1;
     private boolean isScrollFoot = true;
     private SQLiteDatabase coord;
 
@@ -50,8 +56,6 @@ public class FlagFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         initFlagDB();
         initView();
     }
@@ -85,6 +89,10 @@ public class FlagFragment extends Fragment {
         option = new ArrayList<>();
         option.add(getActivity().getApplicationContext().getString(R.string.modify));
         option.add(getString(R.string.delete));
+
+        option_1 = new ArrayList<>();
+        option_1.add("title");
+        option_1.add("context");
         // inputText = (EditText)getActivity().findViewById(R.id.inputText);
         listInput = (ListView)getActivity().findViewById(R.id.listInputText);
         listInput.setAdapter(cursorAdapter);
@@ -135,7 +143,55 @@ public class FlagFragment extends Fragment {
                                         final View item = LayoutInflater.from(getActivity()).inflate(R.layout.item_layout, null);
                                         final EditText editText = (EditText) item.findViewById(R.id.edittext);
                                         editText.setText(cursor.getString(1));
-                                        new AlertDialog.Builder(getActivity())
+                                        /* alertdialog */
+                                        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
+                                        LinearLayout lila1 = new LinearLayout(getContext());
+                                        lila1.setOrientation(LinearLayout.VERTICAL);
+                                        builder.setTitle("title");
+                                        final EditText title = new EditText(getContext());
+                                        final EditText input = new EditText(getContext());
+                                        TextView text = new TextView(getContext());
+                                        text.setText("　　context");
+                                        lila1.addView(title);
+                                        lila1.addView(text);
+                                        lila1.addView(input);
+                                        builder.setView(lila1);
+                                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                                            /*title.getText().toString();
+                                            m_Text = input.getText().toString();*/
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                fhelper.update(cursor.getInt(0), "TITLE : " + " " + title.getText().toString() + "\n" +  "CONTEXT : " + " " + input.getText().toString() );
+                                                cursor.requery();
+                                                cursorAdapter.notifyDataSetChanged();
+
+                                                Cursor Cur = coord.rawQuery("SELECT * FROM table01",null);
+
+                                                //Toast.makeText(this,i+"", Toast.LENGTH_LONG).show();
+
+                                                Cur.moveToPosition(pos);
+                                                //String[] AfterSplit = editText.getText().toString().split(" ");
+                                                ContentValues values = new ContentValues();
+                                                /*values.put("tit",AfterSplit[0]);
+                                                values.put("txt",AfterSplit[1]);*/
+                                                values.put("tit",title.getText().toString());
+                                                values.put("txt",input.getText().toString());
+                                                coord.update("table01",values,"_id="+Cur.getInt(0),null);
+                                            }
+                                        });
+                                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.cancel();
+                                            }
+                                        });
+
+                                        builder.show();
+                                        /* end alertdialog  */
+
+
+                                        /*new AlertDialog.Builder(getActivity())
                                                 .setTitle("修改內容")
                                                 .setView(item)
                                                 .setPositiveButton("修改", new DialogInterface.OnClickListener() {
@@ -150,7 +206,7 @@ public class FlagFragment extends Fragment {
                                                         //Toast.makeText(this,i+"", Toast.LENGTH_LONG).show();
 
                                                         Cur.moveToPosition(pos);
-                                                        String[] AfterSplit = editText.getText().toString().split("\n");
+                                                        String[] AfterSplit = editText.getText().toString().split(" ");
                                                         ContentValues values = new ContentValues();
                                                         values.put("tit",AfterSplit[0]);
                                                         values.put("txt",AfterSplit[1]);
@@ -161,7 +217,7 @@ public class FlagFragment extends Fragment {
 
                                                     }
                                                 })
-                                                .show();
+                                                .show();*/
                                         break;
                                     case 1://delete
                                         new AlertDialog.Builder(getActivity())

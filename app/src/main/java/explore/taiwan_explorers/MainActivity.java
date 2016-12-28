@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -208,15 +209,19 @@ public class MainActivity extends AppCompatActivity
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-            builder.setTitle("標題");
+            builder.setTitle("登錄坐標");
 
             final EditText title = new EditText(this);
             final EditText input = new EditText(this);
-            TextView text = new TextView(this);
-            text.setText("　　內文");
+            TextView text1 = new TextView(MainActivity.this);
+            text1.setText("　　標題");
+            TextView text2 = new TextView(MainActivity.this);
+            text2.setText("　　內文");
 
+            lila1.addView(text1);
             lila1.addView(title);
-            lila1.addView(text);
+
+            lila1.addView(text2);
             lila1.addView(input);
 
             builder.setView(lila1);
@@ -246,7 +251,7 @@ public class MainActivity extends AppCompatActivity
                         Toast.makeText(getApplicationContext(), m_Title + "已記錄", Toast.LENGTH_LONG).show();
 
 
-                        myFlag.fhelper.insert(m_Title+" " + m_Text);
+                        myFlag.fhelper.insert("TITLE : " + " " + m_Title + "\n" + "CONTEXT : " + " " + m_Text);
 
                         myFlag.cursor.requery();
                         myFlag.cursorAdapter.notifyDataSetChanged();
@@ -415,6 +420,78 @@ public class MainActivity extends AppCompatActivity
                 marker.visible(true);
                 map.mMap.addMarker(marker);
             }
+            map.getmMap().setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+                @Override
+                public void onMapClick(LatLng arg0) {
+                    // TODO Auto-generated method stub
+                    LinearLayout lila1 = new LinearLayout(MainActivity.this);
+                    lila1.setOrientation(LinearLayout.VERTICAL);
+
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                    builder.setTitle("登錄坐標");
+
+                    final EditText title = new EditText(MainActivity.this);
+                    final EditText input = new EditText(MainActivity.this);
+                    TextView text1 = new TextView(MainActivity.this);
+                    text1.setText("　　標題");
+                    TextView text2 = new TextView(MainActivity.this);
+                    text2.setText("　　內文");
+                    
+                    lila1.addView(text1);
+                    lila1.addView(title);
+
+                    lila1.addView(text2);
+                    lila1.addView(input);
+
+                    builder.setView(lila1);
+
+
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            m_Title = title.getText().toString();
+                            m_Text = input.getText().toString();
+                            // String str1 = "<font color=\"#3F51B5\">"+ m_Title +"</font>\n" +" <font color=\"#ffcc00\"> " + m_Text +"</font>";
+
+                            // String str2 = String.format("<font color=\"#d40000\">%s",m_Text);
+
+
+                            if(!m_Title.trim().equals("")&&m_Title.indexOf("'")<=-1){
+                                String str = "INSERT INTO table01 (tit,txt,lat,lon) values ('"+m_Title+"','"+ m_Text+"',"+map.a+","+map.b+")";
+                                coord.execSQL(str);
+                                MarkerOptions marker = new MarkerOptions();
+                                map.poi = new LatLng(map.a,map.b);
+                                marker.position(map.poi);
+                                marker.title(m_Title);
+                                marker.snippet(m_Text);
+                                marker.visible(true);
+                                map.mMap.addMarker(marker);
+
+                                Toast.makeText(getApplicationContext(), m_Title + "已記錄", Toast.LENGTH_LONG).show();
+                                myFlag.fhelper.insert("TITLE : " + " " + m_Title + "\n" + "CONTEXT : " + " " + m_Text);
+                                myFlag.cursor.requery();
+                                myFlag.cursorAdapter.notifyDataSetChanged();
+
+                            }else if(m_Title.indexOf("'")>-1){
+                                Toast.makeText(getApplicationContext(), "不可包含單引號", Toast.LENGTH_LONG).show();
+                            }else {
+                                Toast.makeText(getApplicationContext(), "請輸入標題", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
+                }
+            });
         }
     }
 
