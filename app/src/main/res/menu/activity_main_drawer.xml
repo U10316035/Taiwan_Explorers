@@ -8,13 +8,13 @@
             android:title="尋寶地圖" />
         <item android:id="@+id/flag" android:icon="@android:drawable/ic_menu_myplaces"
             android:title="旅遊足跡" />
-        <item android:id="@+id/note" android:icon="@android:drawable/ic_menu_edit"
+        <item android:id="@+id/diary" android:icon="@android:drawable/ic_menu_edit"
             android:title="探險日誌" />
         <item android:id="@+id/photo" android:icon="@android:drawable/ic_menu_camera"
             android:title="旅遊風情" />
         <item android:id="@+id/share" android:icon="@android:drawable/ic_menu_send"
             android:title="旅情分享" />
-        <item android:id="@+id/nav_manage" android:icon="@android:drawable/ic_menu_revert"
+        <item android:id="@+id/exit" android:icon="@android:drawable/ic_menu_revert"
             android:title="結束旅程" />
     </group>
 

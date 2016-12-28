@@ -1,0 +1,22 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/noteimage">
+
+    <EditText
+        android:id="@+id/text_editor2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|top"
+        android:paddingLeft="30sp"
+        android:paddingTop="35sp"
+        android:paddingRight="42sp"
+        android:paddingBottom="35sp"
+        android:inputType="textLongMessage|textCapSentences|textMultiLine"
+        android:textAlignment="gravity"
+        android:autoText="false"
+        android:textColor="#ff29b3ff"
+        android:background="@android:color/transparent"
+        />
+
+</ScrollView>
