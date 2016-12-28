@@ -420,10 +420,10 @@ public class MainActivity extends AppCompatActivity
                 marker.visible(true);
                 map.mMap.addMarker(marker);
             }
-            map.getmMap().setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            map.mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
                 @Override
-                public void onMapClick(LatLng arg0) {
+                public void onMapClick(final LatLng arg0) {
                     // TODO Auto-generated method stub
                     LinearLayout lila1 = new LinearLayout(MainActivity.this);
                     lila1.setOrientation(LinearLayout.VERTICAL);
@@ -439,7 +439,7 @@ public class MainActivity extends AppCompatActivity
                     text1.setText("　　標題");
                     TextView text2 = new TextView(MainActivity.this);
                     text2.setText("　　內文");
-                    
+
                     lila1.addView(text1);
                     lila1.addView(title);
 
@@ -460,10 +460,10 @@ public class MainActivity extends AppCompatActivity
 
 
                             if(!m_Title.trim().equals("")&&m_Title.indexOf("'")<=-1){
-                                String str = "INSERT INTO table01 (tit,txt,lat,lon) values ('"+m_Title+"','"+ m_Text+"',"+map.a+","+map.b+")";
+                                String str = "INSERT INTO table01 (tit,txt,lat,lon) values ('"+m_Title+"','"+ m_Text+"',"+arg0.latitude+","+arg0.longitude+")";
                                 coord.execSQL(str);
                                 MarkerOptions marker = new MarkerOptions();
-                                map.poi = new LatLng(map.a,map.b);
+                                map.poi = new LatLng(arg0.latitude,arg0.longitude);
                                 marker.position(map.poi);
                                 marker.title(m_Title);
                                 marker.snippet(m_Text);
@@ -474,6 +474,8 @@ public class MainActivity extends AppCompatActivity
                                 myFlag.fhelper.insert("TITLE : " + " " + m_Title + "\n" + "CONTEXT : " + " " + m_Text);
                                 myFlag.cursor.requery();
                                 myFlag.cursorAdapter.notifyDataSetChanged();
+
+                                map.mMap.addMarker(marker);
 
                             }else if(m_Title.indexOf("'")>-1){
                                 Toast.makeText(getApplicationContext(), "不可包含單引號", Toast.LENGTH_LONG).show();
