@@ -331,6 +331,7 @@ public class MainActivity extends AppCompatActivity
             Intent int1 = new Intent();
             int1.setClass(this, NewNote.class);
             startActivity(int1);
+            diary.setIsLeave();
             /*Intent intent = new Intent(getActivity(), NewNote.class);
             startActivity(intent);*/
 

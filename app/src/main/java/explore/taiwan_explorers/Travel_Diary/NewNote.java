@@ -54,6 +54,8 @@ public class NewNote extends AppCompatActivity {
         if (id == R.id.action_saveNote) {
 
             EditText editText = (EditText)findViewById(R.id.text_editor);
+            if(editText.getText().toString().equals(""))
+                editText.setText("(empty)");
 
             //Get text from user input in the EditText and add it to the listview using adapter
             String theText = (String)editText.getText().toString();
@@ -96,7 +98,7 @@ public class NewNote extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 EditText editText = (EditText)findViewById(R.id.text_editor);
                 if(editText.getText().toString().equals(""))
-                    editText.setText("empty");
+                    editText.setText("(empty)");
                 String theText = (String)editText.getText().toString();
                 MainDiaryFragment.notesArray.add(theText);
 

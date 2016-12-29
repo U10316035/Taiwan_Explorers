@@ -30,7 +30,7 @@ public class ENote extends AppCompatActivity {
         //Set the editText with text from notesArray that is text from a old note
         EditText editText = (EditText)findViewById(R.id.text_editor2);
 
-        if(MainDiaryFragment.notesArray.get(MainDiaryFragment.itemNumber) == "(empty)")
+        if(MainDiaryFragment.notesArray.get(MainDiaryFragment.itemNumber).equals("empty"))
             editText.setText("");
         else
             editText.setText(MainDiaryFragment.notesArray.get(MainDiaryFragment.itemNumber));
@@ -77,8 +77,8 @@ public class ENote extends AppCompatActivity {
 
             //Get text from user input in the EditText and add it to the listview using adapter
             EditText editText = (EditText)findViewById(R.id.text_editor2);
-            if(editText.getText().toString() == "")
-                editText.setText("empty");
+            if(editText.getText().toString().equals(""))
+                editText.setText("(empty)");
             String theText = (String)editText.getText().toString();
             //set updated note to notes Array
             MainDiaryFragment.notesArray.set(MainDiaryFragment.itemNumber, theText);
@@ -122,8 +122,8 @@ public class ENote extends AppCompatActivity {
                      @Override
                      public void onClick(DialogInterface dialog, int which) {
                          EditText editText = (EditText)findViewById(R.id.text_editor2);
-                         if(editText.getText().toString() == "")
-                             editText.setText("empty");
+                         if(editText.getText().toString().equals(""))
+                             editText.setText("(empty)");
                          String theText = (String)editText.getText().toString();
                          //set updated note to notes Array
                          MainDiaryFragment.notesArray.set(MainDiaryFragment.itemNumber, theText);

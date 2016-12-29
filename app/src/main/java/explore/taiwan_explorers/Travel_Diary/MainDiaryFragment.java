@@ -29,6 +29,7 @@ public class MainDiaryFragment extends Fragment {
     static ListAdapter theAdapter;
     static ListView theListView;
     static int itemNumber;
+    boolean isLeave = true;
 
     @Nullable
     @Override
@@ -76,8 +77,15 @@ public class MainDiaryFragment extends Fragment {
                 itemNumber = position;
                 Intent intent = new Intent(getActivity(), ENote.class);
                 startActivity(intent);
+                isLeave=false;
             }
         });
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        isLeave=true;
     }
     /*@Override
     //Get everything ready
@@ -130,6 +138,13 @@ protected void onCreate(Bundle savedInstanceState) {
         getActivity().getMenuInflater().inflate(R.menu.menu_diary_main, menu);
         return true;/**/
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(isLeave)
+            displayArray.removeAll(displayArray);
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -143,10 +158,15 @@ protected void onCreate(Bundle savedInstanceState) {
             Intent int1 = new Intent();
             int1.setClass(getActivity(), NewNote.class);
             startActivity(int1);
+            isLeave=false;
             /*Intent intent = new Intent(getActivity(), NewNote.class);
             startActivity(intent);*/
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setIsLeave(){
+        isLeave=false;
     }
 }
