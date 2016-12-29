@@ -46,6 +46,7 @@ import explore.taiwan_explorers.Photo_Album.chooseAct_fragment;
 import explore.taiwan_explorers.Photo_Album.gallery;
 import explore.taiwan_explorers.Travel_Diary.MainDiaryFragment;
 import explore.taiwan_explorers.Travel_Diary.NewNote;
+import explore.taiwan_explorers.share.editUploadFragment;
 import explore.taiwan_explorers.share.share_fragment;
 //import explore.taiwan_explorers.Map_Fragment.NoteFragment;
 
@@ -264,7 +265,7 @@ public class MainActivity extends AppCompatActivity
                         Toast.makeText(getApplicationContext(), m_Title + "已記錄", Toast.LENGTH_LONG).show();
 
 
-                        myFlag.fhelper.insert("TITLE : " + " " + m_Title + "\n" + "CONTEXT : " + " " + m_Text);
+                        myFlag.fhelper.insert("標題 : " + " " + m_Title + "\n" + "描述 : " + " " + m_Text);
 
                         myFlag.cursor.requery();
                         myFlag.cursorAdapter.notifyDataSetChanged();
@@ -323,6 +324,8 @@ public class MainActivity extends AppCompatActivity
                     .show();
         }else if (id == R.id.share) {
             Toast.makeText(this,"share", Toast.LENGTH_LONG).show();
+            menu.clear();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new editUploadFragment()).commit();
         }else if (id == R.id.action_new) {
 
             Intent int1 = new Intent();
