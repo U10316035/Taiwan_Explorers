@@ -2,17 +2,22 @@ package explore.taiwan_explorers.Photo_Album;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.app.AlertDialog;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -36,6 +41,7 @@ public class gallery extends Activity {
     ImageView i;
     ImageAdapter IA;
     Bitmap bmp;
+    Button but;
 
     public int ScreenWidth;
     public int ScreenHeight;
@@ -48,6 +54,13 @@ public class gallery extends Activity {
         setContentView(R.layout.location_photo);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         i=(ImageView)findViewById(R.id.image1);
+
+        but = (Button) findViewById(R.id.buttonBUT);
+        but.setOnClickListener(new Button.OnClickListener(){
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -103,7 +116,7 @@ public class gallery extends Activity {
                 builder.setNegativeButton("返回", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        onBackPressed();
                     }
                 });
 
@@ -184,6 +197,12 @@ public class gallery extends Activity {
             re = false;
         }
         return re;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
     }
 
 }

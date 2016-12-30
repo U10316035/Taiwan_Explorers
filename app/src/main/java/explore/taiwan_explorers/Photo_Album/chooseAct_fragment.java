@@ -270,7 +270,8 @@ public class chooseAct_fragment  extends Fragment {
         }else {
             d = (float) Height / (float) ScreenHeight;
             if(d>1) {
-                matrix.setScale(1 / (d + 0.5f), 1 / (d + 0.5f));
+                //matrix.setScale(1 / (d + 0.5f), 1 / (d + 0.5f));
+                matrix.setScale(1 / (d), 1 / (d));
             }
         }
        // Toast.makeText(getActivity(),String.valueOf(d),Toast.LENGTH_LONG).show();
