@@ -323,7 +323,6 @@ public class MainActivity extends AppCompatActivity
                     })
                     .show();
         }else if (id == R.id.share) {
-            Toast.makeText(this,"share", Toast.LENGTH_LONG).show();
             menu.clear();
             getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new editUploadFragment()).commit();
         }else if (id == R.id.action_new) {

@@ -1,10 +1,17 @@
 package explore.taiwan_explorers.Map_Fragment;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,6 +34,7 @@ public class SearchFlagFragment extends SupportMapFragment {
     double lon;
     String tit;
     String con;
+    Button target;
 
     public void setLat(double la){
         lat = la;
@@ -45,7 +53,7 @@ public class SearchFlagFragment extends SupportMapFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        return inflater.inflate(R.layout.fragment_gmaps, container, false);
+        return inflater.inflate(R.layout.fragment_gmaps_target, container, false);
     }
 
     @Override
@@ -58,8 +66,13 @@ public class SearchFlagFragment extends SupportMapFragment {
             public void onMapReady(GoogleMap googlemap) {
                 // TODO Auto-generated method stub
                 mMap = googlemap;
-                LatLng Point = new LatLng(lat, lon);
-                float zoom = 18;
+                if(ContextCompat.checkSelfPermission(getActivity(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    mMap.setMyLocationEnabled(true);
+                }
+                final LatLng Point = new LatLng(lat, lon);
+                final float zoom = 18;
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Point, zoom));
                 MarkerOptions marker = new MarkerOptions();
                 LatLng poi = new LatLng(lat, lon);
@@ -70,6 +83,13 @@ public class SearchFlagFragment extends SupportMapFragment {
                         .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                 marker.visible(true);
                 mMap.addMarker(marker);
+
+                target = (Button)view.findViewById(R.id.buttonTarget);
+                target.setOnClickListener(new Button.OnClickListener(){
+                    public void onClick(View v) {
+                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Point, zoom));
+                    }
+                });
             }
         });
 

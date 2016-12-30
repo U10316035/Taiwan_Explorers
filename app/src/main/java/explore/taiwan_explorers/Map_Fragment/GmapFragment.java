@@ -241,8 +241,10 @@ public class GmapFragment extends SupportMapFragment implements LocationListener
         zoom = 18;
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Point,zoom));
         //mMap.setMyLocationEnabled(true);
-        Toast.makeText(this.getActivity(),"目前位置", Toast.LENGTH_LONG).show();
-        Toast.makeText(this.getActivity(),x+"\n"+y,Toast.LENGTH_LONG).show();
+
+        /*Toast prsent position*/
+        /*Toast.makeText(this.getActivity(),"目前位置", Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getActivity(),x+"\n"+y,Toast.LENGTH_LONG).show();*/
     }
 
     @Override

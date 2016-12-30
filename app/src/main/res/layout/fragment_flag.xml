@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:paddingLeft="25dp"
         android:paddingTop="80dp"
-        android:paddingRight="70sp"
+        android:paddingRight="30sp"
         android:paddingBottom="35sp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
