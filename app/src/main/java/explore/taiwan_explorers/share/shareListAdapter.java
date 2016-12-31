@@ -24,24 +24,26 @@ public class shareListAdapter extends ArrayAdapter<shareDatas> {
     Context context;
     int layoutResourceId;
     shareDatas data[] = null;
+    share_fragment fragment;
 
-    public shareListAdapter(Context context, int layoutResourceId, shareDatas[] data) {
+    public shareListAdapter(Context context, int layoutResourceId, shareDatas[] data,share_fragment fragment) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
         this.data = data;
+        this.fragment = fragment;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position,final View convertView, ViewGroup parent) {
         View row = convertView;
         shareListHolder holder = null;
+
 
         if(row == null)
         {
             LayoutInflater inflater = ((Activity)context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
-
             holder = new shareListHolder();
             holder.sharePic = (ImageView)row.findViewById(R.id.imageViewSharePicure);
             holder.shareTitle = (TextView)row.findViewById(R.id.textViewShareTitle);
@@ -58,14 +60,16 @@ public class shareListAdapter extends ArrayAdapter<shareDatas> {
         shareDatas shareDatas = data[position];
         holder.sharePic.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v) {
-                new AlertDialog.Builder(getContext())
+                fragment.enlargePIC();
+
+                /*new AlertDialog.Builder(getContext())
                         .setTitle("圖片")
                         .setPositiveButton("確認", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                             }
                         })
-                        .show();
+                        .show();*/
             }
         });
 
@@ -91,6 +95,7 @@ public class shareListAdapter extends ArrayAdapter<shareDatas> {
     static class shareListHolder
     {
         ImageView sharePic;
+        ImageView enlargedPic;
         TextView shareTitle;
         TextView shareContext;
         TextView shareUploader;

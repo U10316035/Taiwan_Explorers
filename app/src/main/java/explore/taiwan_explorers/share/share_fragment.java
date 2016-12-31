@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import explore.taiwan_explorers.R;
@@ -17,6 +18,8 @@ import explore.taiwan_explorers.R;
 public class share_fragment  extends Fragment {
 
     private ListView listView1;
+    ImageView enlarge;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -26,6 +29,7 @@ public class share_fragment  extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        enlarge = (ImageView)view.findViewById(R.id.imageViewShareEnlarge);
         shareDatas data[] = new shareDatas[]
                 {
                         new shareDatas("title","uploader", "flagtitle", "flagcontext", 0, 0, "diary", "pic"),
@@ -35,9 +39,18 @@ public class share_fragment  extends Fragment {
                 };
 
         shareListAdapter adapter = new shareListAdapter(getContext(),
-                R.layout.share_fragment_listitem, data);
+                R.layout.share_fragment_listitem, data,share_fragment.this);
 
         listView1 = (ListView)getView().findViewById(R.id.listViewShare);
         listView1.setAdapter(adapter);
+    }
+
+    public void enlargePIC(){
+        enlarge.setVisibility(View.VISIBLE);
+        enlarge.setOnClickListener(new Button.OnClickListener(){
+            public void onClick(View v) {
+                enlarge.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 }
