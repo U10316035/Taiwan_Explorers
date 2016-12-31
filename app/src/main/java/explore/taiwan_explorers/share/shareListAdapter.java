@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import explore.taiwan_explorers.MainActivity;
 import explore.taiwan_explorers.R;
 
@@ -23,14 +25,15 @@ public class shareListAdapter extends ArrayAdapter<shareDatas> {
 
     Context context;
     int layoutResourceId;
-    shareDatas data[] = null;
+    //shareDatas data[] = null;
     share_fragment fragment;
+    ArrayList<shareDatas> dataGroup;
 
-    public shareListAdapter(Context context, int layoutResourceId, shareDatas[] data,share_fragment fragment) {
-        super(context, layoutResourceId, data);
+    public shareListAdapter(Context context, int layoutResourceId, ArrayList<shareDatas> dataGroup, share_fragment fragment) {
+        super(context, layoutResourceId, dataGroup);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
-        this.data = data;
+        this.dataGroup = dataGroup;
         this.fragment = fragment;
     }
 
@@ -57,7 +60,7 @@ public class shareListAdapter extends ArrayAdapter<shareDatas> {
             holder = (shareListHolder)row.getTag();
         }
 
-        shareDatas shareDatas = data[position];
+        shareDatas shareDatas = dataGroup.get(position);
         holder.sharePic.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v) {
                 fragment.enlargePIC();
@@ -95,7 +98,6 @@ public class shareListAdapter extends ArrayAdapter<shareDatas> {
     static class shareListHolder
     {
         ImageView sharePic;
-        ImageView enlargedPic;
         TextView shareTitle;
         TextView shareContext;
         TextView shareUploader;
