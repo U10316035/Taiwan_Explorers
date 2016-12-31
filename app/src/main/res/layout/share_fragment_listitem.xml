@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        app:srcCompat="@drawable/que"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:id="@+id/imageViewSharePicure"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+
+    <ImageView
+        android:layout_width="30dp"
+        app:srcCompat="@drawable/flag"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:id="@+id/imageViewShareFlag"
+        android:layout_height="30dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewShareTitle"
+        android:layout_marginLeft="23dp"
+        android:layout_marginStart="23dp"
+        android:layout_alignTop="@+id/imageViewShareFlag"
+        android:layout_toRightOf="@+id/imageViewSharePicure"
+        android:layout_toEndOf="@+id/imageViewSharePicure"
+        android:textSize="16sp"
+        android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewShareContext"
+        android:layout_below="@+id/textViewShareTitle"
+        android:layout_alignLeft="@+id/textViewShareTitle"
+        android:layout_alignStart="@+id/textViewShareTitle"
+        android:textSize="16sp"
+        android:textColor="@color/colorBlack" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewUploader"
+        android:layout_alignBottom="@+id/imageViewSharePicure"
+        android:layout_toLeftOf="@+id/imageViewShareFlag"
+        android:layout_toStartOf="@+id/imageViewShareFlag"
+        android:textColor="@color/colorPrimaryDark" />
+</RelativeLayout>

@@ -24,6 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.File;
@@ -137,6 +138,7 @@ public class editUploadFragment  extends Fragment {
                                         }
                                     }).show();
                         }else {
+                            sendToFirebase();
                             Cursor Cu = coord.rawQuery("SELECT * FROM tableEditUpload", null);
                             Cu.moveToPosition(0);
                             ContentValues values = new ContentValues();
@@ -446,5 +448,9 @@ public class editUploadFragment  extends Fragment {
                         .show();
             }
         });
+    }
+
+    public void sendToFirebase(){
+
     }
 }
