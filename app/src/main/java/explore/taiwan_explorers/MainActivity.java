@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity
     Menu menu;
     private MainDiaryFragment diary = new MainDiaryFragment();
     private FlagFragment myFlag = new FlagFragment();
+    private editUploadFragment eF = new editUploadFragment();
     Marker marker;
 
     public int ScreenWidth;
@@ -324,7 +325,7 @@ public class MainActivity extends AppCompatActivity
                     .show();
         }else if (id == R.id.share) {
             menu.clear();
-            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new editUploadFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, eF).commit();
         }else if (id == R.id.action_new) {
 
             Intent int1 = new Intent();
@@ -367,6 +368,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.flag) {
             menu.clear();
             getMenuInflater().inflate(R.menu.flag, menu);
+            myFlag.setSelect(0);
             fm.beginTransaction().replace(R.id.content_frame, myFlag).commit();
         } else if (id == R.id.photo) {
                 menu.clear();
@@ -398,6 +400,7 @@ public class MainActivity extends AppCompatActivity
             int1.setClass(MainActivity.this, gallery.class);
             startActivity(int1);*/
             menu.clear();
+            diary.setNotSelect();
             fm.beginTransaction().replace(R.id.content_frame, diary).commit();
             getMenuInflater().inflate(R.menu.menu_diary_main, menu);
             /*menu.clear();
@@ -582,13 +585,45 @@ public class MainActivity extends AppCompatActivity
         return ScreenHeight;
     }
 
-    public void searchFlagFragment(double la,double lo,String ti,String co){
+    public void searchFlagFragment(double la,double lo,String ti,String co,int i){
         FragmentManager fm = getSupportFragmentManager();
         SearchFlagFragment s = new SearchFlagFragment();
         s.setLat(la);
         s.setLon(lo);
         s.setString(ti,co);
+        if(i==1)
+            s.setWhichAct();
         fm.beginTransaction().replace(R.id.content_frame, s).commit();
         menu.clear();
+    }
+
+    public void selectFlagFragment(){
+        FragmentManager fm = getSupportFragmentManager();
+        myFlag.setSelect(1);
+        fm.beginTransaction().replace(R.id.content_frame, myFlag).commit();
+        menu.clear();
+    }
+
+    public void shareFragment(){
+        FragmentManager fm = getSupportFragmentManager();
+        menu.clear();
+        getMenuInflater().inflate(R.menu.share, menu);
+        fm.beginTransaction().replace(R.id.content_frame, new share_fragment()).commit();
+    }
+
+    public void editUploadFragment(int i){
+        FragmentManager fm = getSupportFragmentManager();
+        if(i == 1){
+            eF.setWhichAct();
+        }
+        fm.beginTransaction().replace(R.id.content_frame, eF).commit();
+        menu.clear();
+    }
+
+    public void selectDiaryFragment(){
+        FragmentManager fm = getSupportFragmentManager();
+        diary.setSelect();
+        menu.clear();
+        fm.beginTransaction().replace(R.id.content_frame, diary).commit();
     }
 }

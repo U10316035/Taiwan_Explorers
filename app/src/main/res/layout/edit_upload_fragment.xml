@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:text=""
+                    android:hint="待輸入..."
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:background="@android:color/transparent"
+                    android:layout_width="80dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/editTextName"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignLeft="@+id/editTextTit"
+                    android:layout_alignStart="@+id/editTextTit"
+                    android:layout_marginBottom="36dp" />
+
+                <TextView
+                    android:text="上傳者名稱 : "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView9"
+                    android:layout_marginRight="29dp"
+                    android:layout_marginEnd="29dp"
+                    android:layout_alignBottom="@+id/editTextName"
+                    android:layout_toLeftOf="@+id/editTextName"
+                    android:layout_toStartOf="@+id/editTextName" />
+
+                <TextView
+                    android:text="標題 : "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editTextTitle"
+                    android:layout_marginLeft="29dp"
+                    android:layout_alignBottom="@+id/editTextTit"
+                    android:layout_alignLeft="@+id/textView9"
+                    android:layout_alignStart="@+id/textView9" />
+
+                <EditText
+                    android:text=""
+                    android:hint="待輸入..."
+                    android:maxLines="1"
+                    android:inputType="text"
+                    android:background="@android:color/transparent"
+                    android:layout_width="80dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/editTextTit"
+                    android:layout_marginRight="105dp"
+                    android:layout_marginEnd="105dp"
+                    android:layout_marginBottom="25dp"
+                    android:layout_above="@+id/editTextName"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+                <Button
+                    android:text="送出"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/buttonSend"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:textSize="12sp"
+                    android:layout_alignBottom="@+id/editTextTit" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="80dp"
+                    android:layout_marginStart="80dp"
+                    android:layout_marginTop="54dp"
+                    android:id="@+id/textViewFlagInfor"
+                    android:text="待選擇..."
+                    android:textSize="18sp" />
+
+                <Button
+                    android:text="選擇旗標"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/buttonSelectFlag"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginEnd="50dp" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="待選擇..."
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textViewDiary"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="79dp"
+                    android:layout_marginStart="79dp"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:text="選擇日記"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/buttonSelectDiary"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="52dp"
+                    android:layout_marginEnd="52dp" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="100sp"
+                    android:layout_height="100sp"
+                    app:srcCompat="@drawable/que"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="63dp"
+                    android:layout_marginStart="63dp"
+                    android:id="@+id/imageUpload" />
+
+                <Button
+                    android:text="上傳圖片"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/buttonSelectPic"
+                    android:layout_marginRight="54dp"
+                    android:layout_marginEnd="54dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageViewEnlarge"
+        android:visibility="invisible"/>
+
+    <Button
+        android:text="清除"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:id="@+id/buttonClear"
+        android:layout_toStartOf="@+id/editTextTitle"
+        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/editTextTitle" />
+
+</FrameLayout>
