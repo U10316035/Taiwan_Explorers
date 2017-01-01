@@ -5,6 +5,68 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="標題 : "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextTitle"
+            android:textSize="14sp"
+            android:layout_marginTop="56dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/editTextTit"
+            android:layout_toStartOf="@+id/editTextTit"
+            android:layout_marginRight="47dp"
+            android:layout_marginEnd="47dp" />
+
+        <TextView
+            android:text="上傳者名稱 : "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView9"
+            android:textSize="14sp"
+            android:layout_marginTop="13dp"
+            android:layout_below="@+id/editTextTitle"
+            android:layout_alignRight="@+id/editTextTitle"
+            android:layout_alignEnd="@+id/editTextTitle" />
+
+        <EditText
+            android:text=""
+            android:hint="待輸入..."
+            android:maxLines="1"
+            android:inputType="text"
+            android:background="@android:color/transparent"
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:id="@+id/editTextTit"
+
+            android:textSize="16sp"
+            android:layout_marginRight="76dp"
+            android:layout_marginEnd="76dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/editTextTitle"
+            android:layout_above="@+id/textView9" />
+
+        <EditText
+            android:text=""
+            android:hint="待輸入..."
+            android:maxLines="1"
+            android:inputType="text"
+            android:background="@android:color/transparent"
+            android:layout_width="80dp"
+            android:layout_height="20dp"
+            android:id="@+id/editTextName"
+            android:textSize="16sp"
+            android:layout_alignBottom="@+id/textView9"
+            android:layout_alignLeft="@+id/editTextTit"
+            android:layout_alignStart="@+id/editTextTit"
+            android:layout_alignTop="@+id/textView9" />
+    </RelativeLayout>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -20,59 +82,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <EditText
-                    android:text=""
-                    android:hint="待輸入..."
-                    android:maxLines="1"
-                    android:inputType="text"
-                    android:background="@android:color/transparent"
-                    android:layout_width="80dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/editTextName"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignLeft="@+id/editTextTit"
-                    android:layout_alignStart="@+id/editTextTit"
-                    android:layout_marginBottom="36dp"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:text="上傳者名稱 : "
+                <Button
+                    android:text="清除"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textView9"
-                    android:layout_marginRight="29dp"
-                    android:layout_marginEnd="29dp"
-                    android:layout_alignBottom="@+id/editTextName"
-                    android:layout_toLeftOf="@+id/editTextName"
-                    android:layout_toStartOf="@+id/editTextName"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:text="標題 : "
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/editTextTitle"
-                    android:layout_marginLeft="29dp"
-                    android:layout_alignBottom="@+id/editTextTit"
-                    android:layout_alignLeft="@+id/textView9"
-                    android:layout_alignStart="@+id/textView9"
-                    android:textSize="14sp"/>
-
-                <EditText
-                    android:text=""
-                    android:hint="待輸入..."
-                    android:maxLines="1"
-                    android:inputType="text"
-                    android:background="@android:color/transparent"
-                    android:layout_width="80dp"
-                    android:layout_height="20dp"
-                    android:id="@+id/editTextTit"
-                    android:layout_marginRight="105dp"
-                    android:layout_marginEnd="105dp"
-                    android:layout_marginBottom="25dp"
-                    android:layout_above="@+id/editTextName"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true"
+                    android:id="@+id/buttonClear"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/editTextTitle"
                     android:textSize="16sp"/>
 
                 <Button
@@ -83,7 +99,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentTop="true"
-                    android:textSize="12sp"
+                    android:textSize="16sp"
                     android:layout_alignBottom="@+id/editTextTit" />
             </RelativeLayout>
         </LinearLayout>
@@ -203,14 +219,6 @@
         android:id="@+id/imageViewEnlarge"
         android:visibility="invisible"/>
 
-    <Button
-        android:text="清除"
-        android:layout_width="wrap_content"
-        android:layout_height="38dp"
-        android:id="@+id/buttonClear"
-        android:layout_toStartOf="@+id/editTextTitle"
-        android:layout_alignParentTop="true"
-        android:layout_alignBottom="@+id/editTextTitle"
-        android:textSize="16sp"/>
+
 
 </FrameLayout>

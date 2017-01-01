@@ -3,6 +3,8 @@ package explore.taiwan_explorers.share;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,13 +16,19 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,6 +49,7 @@ public class share_fragment  extends Fragment {
     ImageView enlarge;
     shareDatas dataAccept;
     ArrayList<shareDatas> dataGroup;
+    //ArrayList<File> ALF;
     FirebaseDatabase database;
     DatabaseReference myFirebaseRef;
     shareListAdapter adapter;
@@ -60,6 +69,7 @@ public class share_fragment  extends Fragment {
         showMessage();
 
         dataGroup = new ArrayList<>();
+        //ALF = new ArrayList<>();//alf
         database = FirebaseDatabase.getInstance();
         myFirebaseRef = database.getReference("post");
         queryRef = myFirebaseRef.orderByChild("time");
@@ -75,14 +85,27 @@ public class share_fragment  extends Fragment {
                             }
                         });
                 dataGroup.removeAll(dataGroup);
+                //ALF.removeAll(ALF);//alf
+                //int i = 0;
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     dataAccept = dataSnapshot.getValue(shareDatas.class);
                     dataGroup.add(dataAccept);
+                    /*StorageReference mStorageRef;                                                         //alf
+                    mStorageRef = FirebaseStorage.getInstance().getReferenceFromUrl(dataAccept.picture);    //alf
+                    try {
+                        ALF.add(File.createTempFile("images" + String.valueOf(i), "jpg"));
+                        i++;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
                 }
                 Collections.reverse(dataGroup);
+                //Collections.reverse(ALF);
                 if(dataGroup.size()!=0) {
                     adapter = new shareListAdapter(getContext(),
                             R.layout.share_fragment_listitem, dataGroup, share_fragment.this);
+                    /*adapter = new shareListAdapter(getContext(),
+                            R.layout.share_fragment_listitem, dataGroup, share_fragment.this,ALF);*/
 
                     listView1 = (ListView) getView().findViewById(R.id.listViewShare);
                     listView1.setAdapter(adapter);
@@ -168,7 +191,14 @@ public class share_fragment  extends Fragment {
     }
 
 
-    public void enlargePIC(){
+    public void enlargePIC(String s){//Bitmap b){
+        //enlarge.setImageBitmap(b);
+        StorageReference mStorageRef;
+        mStorageRef = FirebaseStorage.getInstance().getReferenceFromUrl(s);
+        Glide.with(this /* context */)
+                .using(new FirebaseImageLoader())
+                .load(mStorageRef)
+                .into(enlarge);
         enlarge.setVisibility(View.VISIBLE);
         enlarge.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v) {

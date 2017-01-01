@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -27,8 +28,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,6 +55,10 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class editUploadFragment  extends Fragment {
     private SQLiteDatabase coord = null;
+
+    AlertDialog.Builder messageSending;
+    AlertDialog dialog;
+    Button button;
 
     Button buttonSelectPic;
     Button buttonSelectFlag;
@@ -74,6 +84,7 @@ public class editUploadFragment  extends Fragment {
     double lon;
     boolean resumeOrNot = false;//is program pass through onResume()
     Cursor Cu;
+    //boolean sendEnd = false;
 
     @Nullable
     @Override
@@ -133,9 +144,18 @@ public class editUploadFragment  extends Fragment {
                 builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        if(title.getText().toString().indexOf("'")>-1 || uploader.getText().toString().indexOf("'")>-1) {
+                            new android.support.v7.app.AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_alert).setTitle("錯誤")
+                                    .setMessage("欄位含有非法字元")
+                                    .setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    }).show();
+                        }
                         if(title.getText().toString().equals("") || uploader.getText().toString().equals("") || textFlagInfor.getText().toString().equals("待選擇...")
                                 || textDiary.getText().toString().equals("待選擇...") || picString.equals("")) {
-                            new android.support.v7.app.AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_alert).setTitle("離開")
+                            new android.support.v7.app.AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_alert).setTitle("錯誤")
                                     .setMessage("不可有欄位為空")
                                     .setPositiveButton("確認", new DialogInterface.OnClickListener() {
                                         @Override
@@ -143,20 +163,9 @@ public class editUploadFragment  extends Fragment {
                                         }
                                     }).show();
                         }else {
-                            sendToFirebase();
-                            Cursor Cu = coord.rawQuery("SELECT * FROM tableEditUpload", null);
-                            Cu.moveToPosition(0);
-                            ContentValues values = new ContentValues();
-                            values.put("title", "5k4g4xj04a83");
-                            title.setText("");
-                            values.put("tit", "5k4g4xj04a83");
-                            values.put("txt", "0");
-                            values.put("lat", 0);
-                            values.put("lon", 0);
-                            values.put("diary", "5k4g4xj04a83");
-                            values.put("pic", "0");
-                            coord.update("tableEditUpload", values, "_id=" + Cu.getInt(0), null);
-                            ((MainActivity) getActivity()).shareFragment();
+                            uploadPIC();
+                            showMessage();
+                            //afterSend();
                         }
                     }
                 });
@@ -288,6 +297,8 @@ public class editUploadFragment  extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
+        /*if(sendEnd)
+            afterSend();*/
         if(!uploader.getText().equals("")) {
             ContentValues values = new ContentValues();
             values.put("uploadername", uploader.getText().toString());
@@ -455,7 +466,7 @@ public class editUploadFragment  extends Fragment {
         });
     }
 
-    public void sendToFirebase(){
+    public void sendToFirebase(String url,String currentTime){
         // Setup Firebase library
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         //database.setAndroidContext((MainActivity)getActivity());
@@ -464,19 +475,94 @@ public class editUploadFragment  extends Fragment {
         // TODO Need to change “your_reference_path” to your own path
         DatabaseReference myFirebaseRef = database.getReference("post");
 
-        Calendar mCal = Calendar.getInstance();
-        String dateformat = "yyyyMMddkkmmss";
-        SimpleDateFormat df = new SimpleDateFormat(dateformat);
-        String today = df.format(mCal.getTime());
-
         Cursor Cu = coord.rawQuery("SELECT * FROM tableEditUpload", null);
         Cu.moveToPosition(0);
 
 
         myFirebaseRef = database.getReference("post");
         myFirebaseRef = myFirebaseRef.push();//.child(Integer.toString(i));
-        shareDatas datas = new shareDatas(title.getText().toString() , uploader.getText().toString() , Cu.getString(3) , Cu.getString(4) , Cu.getDouble(5), Cu.getDouble(6), Cu.getString(7), Cu.getString(8) ,today);
+        shareDatas datas = new shareDatas(title.getText().toString() , uploader.getText().toString() , Cu.getString(3) , Cu.getString(4) , Cu.getDouble(5), Cu.getDouble(6), Cu.getString(7), url ,currentTime);
         myFirebaseRef.setValue(datas);
+        afterSend();
+        //sendEnd = true;
+    }
 
+    public void uploadPIC(){
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();//storage.getReferenceFromUrl("gs://taiwan-explorer.appspot.com");
+        Uri file = Uri.fromFile(new File(picString));
+        Cursor Cu = coord.rawQuery("SELECT * FROM tableEditUpload", null);
+        Cu.moveToPosition(0);
+
+        Calendar mCal = Calendar.getInstance();
+        String dateformat = "yyyyMMddkkmmss";
+        SimpleDateFormat df = new SimpleDateFormat(dateformat);
+        final String today = df.format(mCal.getTime());
+
+        String s = String.valueOf(today + Cu.getDouble(5))+ String.valueOf(Cu.getDouble(6));
+        StorageReference image = storageRef.child("images/"+s+".jpg");
+
+        UploadTask uploadTask = image.putFile(file);
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                new AlertDialog.Builder(getContext())
+                        .setTitle("上傳失敗")
+                        .setMessage("請稍後再試")
+                        .setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        }).setNegativeButton("返回", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                })
+                        .show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                sendToFirebase(downloadUrl.toString(),today);
+            }
+        });
+    }
+
+    private void afterSend(){
+        dialog.setCancelable(true);
+        Cursor Cu = coord.rawQuery("SELECT * FROM tableEditUpload", null);
+        Cu.moveToPosition(0);
+        ContentValues values = new ContentValues();
+        values.put("title", "5k4g4xj04a83");
+        title.setText("");
+        values.put("tit", "5k4g4xj04a83");
+        values.put("txt", "0");
+        values.put("lat", 0);
+        values.put("lon", 0);
+        values.put("diary", "5k4g4xj04a83");
+        values.put("pic", "0");
+        coord.update("tableEditUpload", values, "_id=" + Cu.getInt(0), null);
+        dialog.cancel();
+        ((MainActivity) getActivity()).shareFragment();
+    }
+
+    private void showMessage(){
+        messageSending = new AlertDialog.Builder(getActivity());
+        messageSending.setTitle("發送中...").
+                setPositiveButton("完成", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        //
+        dialog = messageSending.create();
+        dialog.show();
+        dialog.setCancelable(false);
+        button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        button.setEnabled(false);
     }
 }
