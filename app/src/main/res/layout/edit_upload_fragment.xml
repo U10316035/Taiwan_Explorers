@@ -32,7 +32,8 @@
                     android:layout_alignParentBottom="true"
                     android:layout_alignLeft="@+id/editTextTit"
                     android:layout_alignStart="@+id/editTextTit"
-                    android:layout_marginBottom="36dp" />
+                    android:layout_marginBottom="36dp"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:text="上傳者名稱 : "
@@ -43,7 +44,8 @@
                     android:layout_marginEnd="29dp"
                     android:layout_alignBottom="@+id/editTextName"
                     android:layout_toLeftOf="@+id/editTextName"
-                    android:layout_toStartOf="@+id/editTextName" />
+                    android:layout_toStartOf="@+id/editTextName"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:text="標題 : "
@@ -53,7 +55,8 @@
                     android:layout_marginLeft="29dp"
                     android:layout_alignBottom="@+id/editTextTit"
                     android:layout_alignLeft="@+id/textView9"
-                    android:layout_alignStart="@+id/textView9" />
+                    android:layout_alignStart="@+id/textView9"
+                    android:textSize="14sp"/>
 
                 <EditText
                     android:text=""
@@ -69,7 +72,8 @@
                     android:layout_marginBottom="25dp"
                     android:layout_above="@+id/editTextName"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_alignParentEnd="true"
+                    android:textSize="16sp"/>
 
                 <Button
                     android:text="送出"
@@ -206,6 +210,7 @@
         android:id="@+id/buttonClear"
         android:layout_toStartOf="@+id/editTextTitle"
         android:layout_alignParentTop="true"
-        android:layout_alignBottom="@+id/editTextTitle" />
+        android:layout_alignBottom="@+id/editTextTitle"
+        android:textSize="16sp"/>
 
 </FrameLayout>

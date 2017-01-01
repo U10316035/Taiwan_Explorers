@@ -54,6 +54,7 @@ public class shareListAdapter extends ArrayAdapter<shareDatas> {
             holder.shareContext = (TextView)row.findViewById(R.id.textViewShareContext);
             holder.shareUploader = (TextView)row.findViewById(R.id.textViewUploader);
             holder.shareFlag = (ImageView)row.findViewById(R.id.imageViewShareFlag);
+            holder.shareTime = (TextView)row.findViewById(R.id.textViewTime);
             row.setTag(holder);
         }
         else
@@ -91,7 +92,7 @@ public class shareListAdapter extends ArrayAdapter<shareDatas> {
                             case 0:
                                 new AlertDialog.Builder(getContext())
                                         .setTitle("旗標")
-                                        .setMessage("標題 : " + shareDatas.flagTitle + "\n" + "內文 : " + shareDatas.flagContext + "\n" + "經度 : " +  shareDatas.latitude + "\n" + "緯度 : " + shareDatas.longtitude)
+                                        .setMessage("標題 : " + shareDatas.flagTitle + "\n" + "描述 : " + shareDatas.flagContext + "\n" + "經度 : " +  shareDatas.latitude + "\n" + "緯度 : " + shareDatas.longtitude)
                                         .setPositiveButton("確認", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
@@ -113,6 +114,7 @@ public class shareListAdapter extends ArrayAdapter<shareDatas> {
         String[] beforeNewline = shareDatas.diary.split("\n", 20);
         holder.shareContext.setText(beforeNewline[0]);//.setImageResource(shareDatas.title);
         holder.shareUploader.setText(shareDatas.uploader);
+        holder.shareTime.setText(timeString(shareDatas.time));
 
         return row;
     }
@@ -124,5 +126,18 @@ public class shareListAdapter extends ArrayAdapter<shareDatas> {
         TextView shareContext;
         TextView shareUploader;
         ImageView shareFlag;
+        TextView shareTime;
+    }
+
+    private String timeString(String s){
+        String s1 = s.substring(0,4);
+        String s2 = s.substring(4,6);
+        String s3 = s.substring(6,8);
+        String s4 = s.substring(8,10);
+        String s5 = s.substring(10,12);
+        String s6 = s.substring(12,14);
+        String re = s1 + "/" + s2 + "/" + s3 + " " + s4 + ":" + s5 + ":" + s6;
+        return re;
+
     }
 }

@@ -85,8 +85,6 @@ public class ENote extends AppCompatActivity {
                 editText.setText(text);
                 whichAct2 = 0;
             }
-
-            editText.setSelection(editText.getText().length());
             editText.setEnabled(false);
             back.setVisibility(View.VISIBLE);
             back.setOnClickListener(new Button.OnClickListener() {

@@ -407,7 +407,7 @@ public class editUploadFragment  extends Fragment {
             public void onClick(View v) {
                 new AlertDialog.Builder(getActivity())
                         .setTitle("旗標資訊")
-                        .setMessage("標題 : " + tit + "\n" + "內文 : " + con + "\n" + "經度 : " +  lat + "\n" + "緯度 : " + lon)
+                        .setMessage("標題 : " + tit + "\n" + "描述 : " + con + "\n" + "經度 : " +  lat + "\n" + "緯度 : " + lon)
                         .setPositiveButton("確認", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

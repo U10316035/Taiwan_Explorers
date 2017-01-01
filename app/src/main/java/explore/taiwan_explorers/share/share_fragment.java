@@ -35,6 +35,9 @@ import explore.taiwan_explorers.Travel_Diary.ENote;
 public class share_fragment  extends Fragment {
 
     private ListView listView1;
+    AlertDialog.Builder messageLoading;
+    AlertDialog dialog;
+    Button button;
     ImageView enlarge;
     shareDatas dataAccept;
     ArrayList<shareDatas> dataGroup;
@@ -53,6 +56,9 @@ public class share_fragment  extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        showMessage();
+
         dataGroup = new ArrayList<>();
         database = FirebaseDatabase.getInstance();
         myFirebaseRef = database.getReference("post");
@@ -62,6 +68,13 @@ public class share_fragment  extends Fragment {
             public void onDataChange(DataSnapshot snapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
+                messageLoading.setTitle("有人上傳新文章囉").
+                        setPositiveButton("完成", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                dataGroup.removeAll(dataGroup);
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     dataAccept = dataSnapshot.getValue(shareDatas.class);
                     dataGroup.add(dataAccept);
@@ -101,6 +114,7 @@ public class share_fragment  extends Fragment {
                         }
                     });
                 }
+                button.setEnabled(true);
             }
 
             @Override
@@ -110,7 +124,7 @@ public class share_fragment  extends Fragment {
             }
         };
 
-        queryRef.addListenerForSingleValueEvent(VE);
+        queryRef.addValueEventListener(VE);
 
         /*myFirebaseRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -161,5 +175,21 @@ public class share_fragment  extends Fragment {
                 enlarge.setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    private void showMessage(){
+        messageLoading = new AlertDialog.Builder(getActivity());
+        messageLoading.setTitle("讀取中").
+                setPositiveButton("完成", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+         //
+        dialog = messageLoading.create();
+        dialog.show();
+        dialog.setCancelable(false);
+        button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        button.setEnabled(false);
     }
 }
