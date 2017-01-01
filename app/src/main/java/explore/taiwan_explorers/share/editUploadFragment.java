@@ -33,6 +33,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import explore.taiwan_explorers.MainActivity;
 import explore.taiwan_explorers.R;
@@ -131,8 +133,7 @@ public class editUploadFragment  extends Fragment {
                 builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        sendToFirebase();
-                        /*if(title.getText().toString().equals("") || uploader.getText().toString().equals("") || textFlagInfor.getText().toString().equals("待選擇...")
+                        if(title.getText().toString().equals("") || uploader.getText().toString().equals("") || textFlagInfor.getText().toString().equals("待選擇...")
                                 || textDiary.getText().toString().equals("待選擇...") || picString.equals("")) {
                             new android.support.v7.app.AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_alert).setTitle("離開")
                                     .setMessage("不可有欄位為空")
@@ -156,7 +157,7 @@ public class editUploadFragment  extends Fragment {
                             values.put("pic", "0");
                             coord.update("tableEditUpload", values, "_id=" + Cu.getInt(0), null);
                             ((MainActivity) getActivity()).shareFragment();
-                        }*/
+                        }
                     }
                 });
                 builder.setNegativeButton("返回", new DialogInterface.OnClickListener() {
@@ -463,11 +464,19 @@ public class editUploadFragment  extends Fragment {
         // TODO Need to change “your_reference_path” to your own path
         DatabaseReference myFirebaseRef = database.getReference("post");
 
-        for(int i =0;i<11;i++) {
-            myFirebaseRef = database.getReference("post");
-            myFirebaseRef = myFirebaseRef.child(Integer.toString(i));
-            shareDatas datas = new shareDatas("title" + Integer.toString(i) , "uploader"+ Integer.toString(i) , "flagtitle" +Integer.toString(i), "flagcontext", 0, 0, "diary2", "pic");
-            myFirebaseRef.setValue(datas);
-        }
+        Calendar mCal = Calendar.getInstance();
+        String dateformat = "yyyyMMddkkmmss";
+        SimpleDateFormat df = new SimpleDateFormat(dateformat);
+        String today = df.format(mCal.getTime());
+
+        Cursor Cu = coord.rawQuery("SELECT * FROM tableEditUpload", null);
+        Cu.moveToPosition(0);
+
+
+        myFirebaseRef = database.getReference("post");
+        myFirebaseRef = myFirebaseRef.push();//.child(Integer.toString(i));
+        shareDatas datas = new shareDatas(title.getText().toString() , uploader.getText().toString() , Cu.getString(3) , Cu.getString(4) , Cu.getDouble(5), Cu.getDouble(6), Cu.getString(7), Cu.getString(8) ,today);
+        myFirebaseRef.setValue(datas);
+
     }
 }

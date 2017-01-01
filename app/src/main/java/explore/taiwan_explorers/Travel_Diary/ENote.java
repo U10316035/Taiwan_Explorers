@@ -28,13 +28,15 @@ import explore.taiwan_explorers.R;
 public class ENote extends AppCompatActivity {
     Button back;
     int whichAct = 0;
+    int whichAct2 = 0;
     EditText editText;
+    String text;
 
-    ENote(){
+    public ENote(){
 
     }
 
-    ENote(int i){
+    public ENote(int i){
        whichAct = 1;
     }
 
@@ -44,8 +46,11 @@ public class ENote extends AppCompatActivity {
         setContentView(R.layout.activity_e_note);
         Intent intent = this.getIntent();
         Bundle bundle =this.getIntent().getExtras();
-        if(bundle != null)
+        if(bundle != null) {
             whichAct = bundle.getInt("whichAct");
+            whichAct2 = bundle.getInt("whichAct2");
+            text = bundle.getString("diaryText");
+        }
         back = (Button)findViewById(R.id.buttonDiaryBack);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -71,10 +76,16 @@ public class ENote extends AppCompatActivity {
                 editText.setText(MainDiaryFragment.notesArray.get(MainDiaryFragment.itemNumber));
             editText.setSelection(editText.getText().length());
         }else {
-            if (MainDiaryFragment.notesArray.get(MainDiaryFragment.itemNumber).equals("(No title)"))
-                editText.setText("");
-            else
-                editText.setText(MainDiaryFragment.notesArray.get(MainDiaryFragment.itemNumber));
+            if(whichAct2==0) {
+                if (MainDiaryFragment.notesArray.get(MainDiaryFragment.itemNumber).equals("(No title)"))
+                    editText.setText("");
+                else
+                    editText.setText(MainDiaryFragment.notesArray.get(MainDiaryFragment.itemNumber));
+            }else{
+                editText.setText(text);
+                whichAct2 = 0;
+            }
+
             editText.setSelection(editText.getText().length());
             editText.setEnabled(false);
             back.setVisibility(View.VISIBLE);

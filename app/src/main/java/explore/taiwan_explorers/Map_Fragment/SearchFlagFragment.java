@@ -37,6 +37,7 @@ public class SearchFlagFragment extends SupportMapFragment {
     Button target;
     Button back;
     int whichAct = 0;
+    int whichAct2 = 0;
 
     public void setLat(double la){
         lat = la;
@@ -66,7 +67,10 @@ public class SearchFlagFragment extends SupportMapFragment {
             back.setVisibility(View.VISIBLE);
             back.setOnClickListener(new Button.OnClickListener(){
                 public void onClick(View v) {
-                    ((MainActivity)getActivity()).selectFlagFragment();
+                    if(whichAct2 == 0)
+                        ((MainActivity)getActivity()).selectFlagFragment();
+                    else
+                        ((MainActivity)getActivity()).shareFragment();
                     back.setVisibility(View.INVISIBLE);
                 }
             });
@@ -110,5 +114,8 @@ public class SearchFlagFragment extends SupportMapFragment {
 
     public void setWhichAct(){
         whichAct = 1;
+    }
+    public void setWhichAct2(int i){
+        whichAct2 = i;
     }
 }

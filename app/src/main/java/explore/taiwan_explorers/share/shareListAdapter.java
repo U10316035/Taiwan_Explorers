@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import explore.taiwan_explorers.MainActivity;
 import explore.taiwan_explorers.R;
@@ -60,7 +61,7 @@ public class shareListAdapter extends ArrayAdapter<shareDatas> {
             holder = (shareListHolder)row.getTag();
         }
 
-        shareDatas shareDatas = dataGroup.get(position);
+        final shareDatas shareDatas = dataGroup.get(position);
         holder.sharePic.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v) {
                 fragment.enlargePIC();
@@ -78,18 +79,39 @@ public class shareListAdapter extends ArrayAdapter<shareDatas> {
 
         holder.shareFlag.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v) {
-                new AlertDialog.Builder(getContext())
-                        .setTitle("旗標")
-                        .setPositiveButton("確認", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
-                        .show();
+                List<String> option;
+                option = new ArrayList<>();
+                option.add("資訊");
+                option.add("跳轉地圖");
+
+                new AlertDialog.Builder(fragment.getActivity()).setItems(option.toArray(new String[option.size()]), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                new AlertDialog.Builder(getContext())
+                                        .setTitle("旗標")
+                                        .setMessage("標題 : " + shareDatas.flagTitle + "\n" + "內文 : " + shareDatas.flagContext + "\n" + "經度 : " +  shareDatas.latitude + "\n" + "緯度 : " + shareDatas.longtitude)
+                                        .setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                            }
+                                        })
+                                        .show();
+                                break;
+                            case 1:
+                                ((MainActivity)fragment.getActivity()).searchFlagFragment(shareDatas.latitude,shareDatas.longtitude,shareDatas.flagTitle,shareDatas.flagContext,1,1);
+                                break;
+                        }
+
+                    }
+                }).show();
             }
         });
+
         holder.shareTitle.setText(shareDatas.title);
-        holder.shareContext.setText(shareDatas.diary);//.setImageResource(shareDatas.title);
+        String[] beforeNewline = shareDatas.diary.split("\n", 20);
+        holder.shareContext.setText(beforeNewline[0]);//.setImageResource(shareDatas.title);
         holder.shareUploader.setText(shareDatas.uploader);
 
         return row;

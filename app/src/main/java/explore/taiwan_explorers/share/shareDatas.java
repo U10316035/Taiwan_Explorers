@@ -13,13 +13,14 @@ public class shareDatas {
     public double longtitude;
     public String diary;
     public String picture;
+    public String time;
 
     public shareDatas(){
         super();
     }
 
     public shareDatas(String title,String uploader,String flagTitle,String flagContext,
-                      double latitude,double longtitude,String diary,String picture) {
+                      double latitude,double longtitude,String diary,String picture,String time) {
         super();
         this.title = title;
         this.uploader = uploader;
@@ -29,5 +30,6 @@ public class shareDatas {
         this.longtitude = longtitude;
         this.diary = diary;
         this.picture = picture;
+        this.time = time;
     }
 }

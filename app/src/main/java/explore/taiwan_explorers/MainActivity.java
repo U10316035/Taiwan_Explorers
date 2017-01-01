@@ -585,14 +585,16 @@ public class MainActivity extends AppCompatActivity
         return ScreenHeight;
     }
 
-    public void searchFlagFragment(double la,double lo,String ti,String co,int i){
+    public void searchFlagFragment(double la,double lo,String ti,String co,int i,int i2){
         FragmentManager fm = getSupportFragmentManager();
         SearchFlagFragment s = new SearchFlagFragment();
         s.setLat(la);
         s.setLon(lo);
         s.setString(ti,co);
-        if(i==1)
+        if(i==1) {
             s.setWhichAct();
+            s.setWhichAct2(i2);
+        }
         fm.beginTransaction().replace(R.id.content_frame, s).commit();
         menu.clear();
     }

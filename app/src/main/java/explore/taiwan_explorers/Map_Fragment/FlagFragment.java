@@ -374,7 +374,7 @@ public class FlagFragment extends Fragment {
 
 
     private void searchFlag(double la,double lo,String ti,String co,int i){
-        ((MainActivity)getActivity()).searchFlagFragment(la,lo,ti,co,i);
+        ((MainActivity)getActivity()).searchFlagFragment(la,lo,ti,co,i,0);
     }
 
     public void setFlagSQL(SQLiteDatabase coord){
