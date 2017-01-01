@@ -22,6 +22,7 @@
             android:layout_gravity="center"
             android:id="@+id/listInputText"
             android:transcriptMode="alwaysScroll"
+            android:divider = "@color/colorBlack"
             >
         </ListView>
 

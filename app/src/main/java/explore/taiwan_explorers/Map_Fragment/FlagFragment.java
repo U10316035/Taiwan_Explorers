@@ -69,7 +69,6 @@ public class FlagFragment extends Fragment {
         fhelper = new DBHelper(getActivity().getApplicationContext(),"flag_database");
         cursor = fhelper.select();
         listInput = (ListView)getActivity().findViewById(R.id.listInputText);
-        listInput.setDivider(null);
         listInput.setDividerHeight(1);
         cursorAdapter = new SimpleCursorAdapter(getActivity().getApplication(),
                 R.layout.flag_adapter, cursor,

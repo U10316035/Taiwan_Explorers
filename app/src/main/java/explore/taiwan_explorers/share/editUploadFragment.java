@@ -153,7 +153,16 @@ public class editUploadFragment  extends Fragment {
                                         }
                                     }).show();
                         }
-                        if(title.getText().toString().equals("") || uploader.getText().toString().equals("") || textFlagInfor.getText().toString().equals("待選擇...")
+                        else if(title.getText().toString().length() > 6 || uploader.getText().toString().length() > 6) {
+                            new android.support.v7.app.AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_alert).setTitle("錯誤")
+                                    .setMessage("欄位過長，標題、名稱不大於7字元")
+                                    .setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                        }
+                                    }).show();
+                        }
+                        else if(title.getText().toString().equals("") || uploader.getText().toString().equals("") || textFlagInfor.getText().toString().equals("待選擇...")
                                 || textDiary.getText().toString().equals("待選擇...") || picString.equals("")) {
                             new android.support.v7.app.AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_alert).setTitle("錯誤")
                                     .setMessage("不可有欄位為空")
