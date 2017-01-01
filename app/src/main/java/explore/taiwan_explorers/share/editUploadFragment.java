@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -277,8 +278,7 @@ public class editUploadFragment  extends Fragment {
             iv.setImageBitmap(bmp);
             iv.setOnClickListener(new Button.OnClickListener(){
                 public void onClick(View v) {
-                    ivE.setVisibility(View.VISIBLE);
-                    ivE.setImageBitmap(bmp);
+                    adjustPIC(ivE,bmp.getWidth(),bmp.getHeight());
                 }
             });
             ivE.setOnClickListener(new Button.OnClickListener(){
@@ -346,8 +346,7 @@ public class editUploadFragment  extends Fragment {
 
             iv.setOnClickListener(new Button.OnClickListener(){
                 public void onClick(View v) {
-                    ivE.setVisibility(View.VISIBLE);
-                    ivE.setImageBitmap(bmp);
+                    adjustPIC(ivE,bmp.getWidth(),bmp.getHeight());
                 }
             });
             ivE.setOnClickListener(new Button.OnClickListener(){
@@ -573,5 +572,30 @@ public class editUploadFragment  extends Fragment {
         dialog.setCancelable(false);
         button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
         button.setEnabled(false);
+    }
+
+    private void adjustPIC(ImageView img, int Width, int Height) {
+        Matrix matrix;
+        float d;
+        matrix = new Matrix();
+        if(Width > Height) {
+            d = (float)Width/(float)ScreenHeight;
+            if(d>1){
+                matrix.setScale(1/(d+0.5f), 1/(d+0.5f));
+                //bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+                matrix.setRotate(90);
+            }
+//            matrix.setRotate(90);
+            //bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+        }else {
+            d = (float) Height / (float) ScreenHeight;
+            if(d>1) {
+                //matrix.setScale(1 / (d + 0.5f), 1 / (d + 0.5f));
+                matrix.setScale(1 / (d), 1 / (d));
+            }
+        }
+        bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, true);
+        ivE.setVisibility(View.VISIBLE);
+        ivE.setImageBitmap(bmp);
     }
 }

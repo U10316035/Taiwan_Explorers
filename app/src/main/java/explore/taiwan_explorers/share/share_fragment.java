@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -47,6 +49,7 @@ public class share_fragment  extends Fragment {
     AlertDialog dialog;
     Button button;
     ImageView enlarge;
+    Bitmap bitmap;//enlarge bitmap
     shareDatas dataAccept;
     ArrayList<shareDatas> dataGroup;
     //ArrayList<File> ALF;
@@ -55,6 +58,9 @@ public class share_fragment  extends Fragment {
     shareListAdapter adapter;
     ValueEventListener VE;
     Query queryRef;
+
+    int ScreenWidth;
+    int ScreenHeight;
 
     @Nullable
     @Override
@@ -67,6 +73,9 @@ public class share_fragment  extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         showMessage();
+
+        ScreenWidth = ((MainActivity)getActivity()).getScreenWidth();
+        ScreenHeight = ((MainActivity)getActivity()).getScreenHeight();
 
         dataGroup = new ArrayList<>();
         //ALF = new ArrayList<>();//alf
@@ -205,6 +214,9 @@ public class share_fragment  extends Fragment {
                 enlarge.setVisibility(View.INVISIBLE);
             }
         });
+        /*BitmapDrawable drawable = ((BitmapDrawable) enlarge.getDrawable());
+        bitmap = drawable.getBitmap();
+        adjustPIC(enlarge,bitmap.getWidth(),bitmap.getHeight());*/
     }
 
     private void showMessage(){
@@ -222,4 +234,30 @@ public class share_fragment  extends Fragment {
         button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
         button.setEnabled(false);
     }
+
+    /*private void adjustPIC(ImageView img, int Width, int Height) {
+        Matrix matrix;
+        float d;
+        matrix = new Matrix();
+        if(Width > Height) {
+            d = (float)Width/(float)ScreenHeight;
+            if(d>1){
+                matrix.setScale(1/(d+0.5f), 1/(d+0.5f));
+                matrix.setRotate(90);
+            }
+        }else {
+            d = (float) Height / (float) ScreenHeight;
+            if(d>1) {
+                matrix.setScale(1 / (d), 1 / (d));
+            }
+        }
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        enlarge.setImageBitmap(bitmap);
+        enlarge.setVisibility(View.VISIBLE);
+        enlarge.setOnClickListener(new Button.OnClickListener(){
+            public void onClick(View v) {
+                enlarge.setVisibility(View.INVISIBLE);
+            }
+        });
+    }*///adjust pic if width > height
 }
